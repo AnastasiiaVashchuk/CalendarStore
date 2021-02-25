@@ -9,6 +9,7 @@ namespace Models
         public Customer(string fn = "", string ln = "", List<Calendar> cart=null)
             : base(fn, ln)
         {
+
             this.cart = cart;
         }
         public override string ToString()
