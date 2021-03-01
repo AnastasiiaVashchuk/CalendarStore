@@ -1,4 +1,1 @@
 
-Color: ActiveBorder, Material: plastic, Price: 2
-
-Color: DarkGoldenrod, Material: plastic, Price: 3

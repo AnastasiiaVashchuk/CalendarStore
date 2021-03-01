@@ -7,18 +7,23 @@ namespace User
 {
     public class UserMenu : Menu
     {
-        public Customer customer;
+        private Customer customer;
+
+        public Customer Customer
+        {   
+            get => customer;
+            set => customer = value;
+        }
+
         public UserMenu(Customer customer=null)
         {
             this.customer = customer;
         }
 
-        public void set(string f,string l)
-        {
-            
-        }
+     
         public void displayMainMenu()
         {
+            Console.Clear();
             List<string> items = new List<string>()
             {
                 "catalog",
@@ -36,7 +41,7 @@ namespace User
                     }
                     else
                     {
-                        addToCart(item);
+                        showAddToCart(item);
                     }
                     break;
                 case "cart":
@@ -47,8 +52,9 @@ namespace User
                     break;
             }
         }
-        public void addToCart(string calendar)
+        public void showAddToCart(string calendar)
         {
+            Console.Clear();
             List<string> items = new List<string>()
             {
                 "put to cart",
@@ -58,10 +64,17 @@ namespace User
             {
                 case "put to cart":
                     Calendar c=Calendar.parse(calendar.Split(".")[1]);
-                    customer.cart.Add(c);
+                    customer.putToCart(c);
                     Console.Clear();
-                    Console.Write("Calendar was successfully added to cart!");
-                    System.Threading.Thread.Sleep(20);
+                    while (true)
+                    {
+                        Console.Write("Calendar was successfully added to cart!");
+                        if (Console.ReadKey().Key != null)
+                        {
+                            Console.Clear();
+                            break;
+                        }
+                    }
                     goto case "Back";
                 case "Back":
                     string item=showCatalog();
@@ -71,18 +84,19 @@ namespace User
                     }
                     else
                     {
-                        addToCart(item);
+                        showAddToCart(item);
                     }
                     break;
             }
         }
         public void showCart()
         {
+            Console.Clear();
             string head = "Cart";
             List<string> items = new List<string>();
-            if (customer.cart != null)
+            if (customer.Cart != null)
             {
-                foreach (var calendar in customer.cart)
+                foreach (var calendar in customer.Cart)
                 {
                     items.Add(calendar.ToString());
                 }
@@ -96,25 +110,25 @@ namespace User
                     displayMainMenu();
                     break;
                 case "Buy all":
-                    if (customer.cart != null)
+                    if (customer.Cart != null)
                     {
-                        foreach (var calendar in customer.cart)
+                        foreach (var calendar in customer.Cart)
                         {
                             Modifier.addToSalesHistory(calendar, customer);
                         }
                     }
-                    customer.cart = new List<Calendar>();
-                    Console.Clear();
+                    customer.Cart = new List<Calendar>();
                     showCart();
                     break;
                 default:
-                    deleteCalendarFromCart(Calendar.parse(selectedItem));
+                    showDeleteCalendarFromCart(Calendar.parse(selectedItem));
                     break;
             }
         }
 
-        public void deleteCalendarFromCart(Calendar calendar)
+        public void showDeleteCalendarFromCart(Calendar calendar)
         {
+            Console.Clear();
             List<string> items = new List<string>()
             {
                 "delete from"+" cart"
@@ -124,7 +138,7 @@ namespace User
             {
                 case "delete from"+" cart":
                     
-                    if (customer.cart.Remove(calendar))
+                    if (customer.deleteCalendarFromCart(calendar))
                     {
                         goto case "Back";
                     }

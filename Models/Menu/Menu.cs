@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Models
 {
     public class Menu : IMenu
     {
         public const string calendarsFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\calendars.txt";
-
-        public const string salesHistoryFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\sales_history.txt";
-        public const string salesStatisticsFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\sales_statistics.txt";
-
+        
         public string switcher(List<string> items, string head = "", bool back = false, bool exit = false, bool iscolor= false)
         {
             Console.Clear();
@@ -24,11 +22,11 @@ namespace Models
                 items.Add("Exit");
             }
 
-            List<string> kek = new List<string>();
-            int lol = 0;
+            List<string> items2 = new List<string>();
+            int index2 = 0;
             if (iscolor)
             {
-                kek = new List<string>()
+                items2 = new List<string>()
                 {
                     items[0],
                     "Back"
@@ -36,7 +34,7 @@ namespace Models
             }
             else
             {
-                kek = items;
+                items2 = items;
             }
 
             int selectedMenuItem = -1;
@@ -44,18 +42,18 @@ namespace Models
             while (selectedMenuItem == -1)
             {
                 Console.WriteLine("__________________" + head + "__________________");
-                for (int i = 0; i < kek.Count; i++)
+                for (int i = 0; i < items2.Count; i++)
                 {
                     if (i == index)
                     {
                         Console.BackgroundColor = ConsoleColor.Gray;
                         Console.ForegroundColor = ConsoleColor.Black;
 
-                        Console.WriteLine(kek[i]);
+                        Console.WriteLine(items2[i]);
                     }
                     else
                     {
-                        Console.WriteLine(kek[i]);
+                        Console.WriteLine(items2[i]);
                     }
 
                     Console.ResetColor();
@@ -64,7 +62,7 @@ namespace Models
                 ConsoleKeyInfo ckey = Console.ReadKey();
                 if (ckey.Key == ConsoleKey.DownArrow)
                 {
-                    if (index == kek.Count - 1)
+                    if (index == items2.Count - 1)
                     {
                         index = 0;
                     }
@@ -77,7 +75,7 @@ namespace Models
                 {
                     if (index <= 0)
                     {
-                        index = kek.Count - 1;
+                        index = items2.Count - 1;
                     }
                     else
                     {
@@ -90,33 +88,34 @@ namespace Models
                     selectedMenuItem = index;
                     break;
                 }
-                else if (ckey.Key == ConsoleKey.LeftArrow && iscolor && kek[index]!="Back")
+                else if (ckey.Key == ConsoleKey.LeftArrow && iscolor && items2[index]!="Back")
                 {
-                    if (lol == 0)
+                    if (index2 == 0)
                     {
-                        lol = items.Count;
+                        index2 = items.Count;
                     }
 
-                    lol--;
-                    kek[0] = items[lol];
+                    index2--;
+                    items2[0] = items[index2];
                 }
-                else if (ckey.Key == ConsoleKey.RightArrow && iscolor && kek[index]!="Back")
+                else if (ckey.Key == ConsoleKey.RightArrow && iscolor && items2[index]!="Back")
                 {
-                    if (lol == items.Count-1)
+                    if (index2 == items.Count-1)
                     {
-                        lol = -1;
+                        index2 = -1;
                     }
 
-                    lol++;
-                    kek[0] = items[lol];
+                    index2++;
+                    items2[0] = items[index2];
                 }
                 Console.Clear();
             }
-            return kek[selectedMenuItem];
+            return items2[selectedMenuItem];
         }
 
         public string showCatalog()
         {
+            Console.Clear();
             List<string> items = new List<string>();
             string head = "catalog";
             int counter = 1;
@@ -138,11 +137,31 @@ namespace Models
 
         public  Tuple<string, string> register()
         {
+            Console.Clear();
             Console.WriteLine("Welcome to Calendar Store!");
+            
             Console.WriteLine("Your first name: ");
             string fname = Console.ReadLine();
+            
             Console.WriteLine("Your last name: ");
             string lname = Console.ReadLine();
+            
+            
+            bool isWord1 = Regex.IsMatch( fname, @"^[A-Za-z]+$" );
+            bool isWord2 = Regex.IsMatch( lname, @"^[A-Za-z]+$" );
+            if (!isWord1 || !isWord2)
+            {
+                while (true)
+                {
+                    Console.Write("Please enter valid name");
+                    if (Console.ReadKey().Key != null)
+                    {
+                        Console.Clear();
+                        break;
+                    }
+                }
+                register();
+            }
             return new Tuple<string, string>(fname, lname);
         }
     }

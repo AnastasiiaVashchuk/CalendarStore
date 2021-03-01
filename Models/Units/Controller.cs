@@ -20,19 +20,16 @@ namespace Models
             DateTime localDate = DateTime.Now;
             string date=localDate.ToString(culture);
             string field = customer+", "+calendar+", "+date+"\n";
-
-            deleteCalendar(calendar);
-            File.AppendAllText(salesHistoryFilePath, field);
-            File.AppendAllText(incomeFilePath, calendar.price+"\n");
-            File.AppendAllText(colorFilePath, calendar.color+"\n");
-            File.AppendAllText(materialFilePath, calendar.material+"\n");
-        }
-        
-        public static void deleteCalendar(Calendar calendar)
-        {
+            
+            //delete calendar from catalog
             string text = File.ReadAllText(calendarsFilePath);
             text = text.Replace(calendar.ToString(), "");
             File.WriteAllText(calendarsFilePath,text);
+            
+            File.AppendAllText(salesHistoryFilePath, field);
+            File.AppendAllText(incomeFilePath, calendar.Price+"\n");
+            File.AppendAllText(colorFilePath, calendar.Color+"\n");
+            File.AppendAllText(materialFilePath, calendar.Material+"\n");
         }
         
         public static string getStatistics()
@@ -86,11 +83,6 @@ namespace Models
                 statictics+=eKey + ": " + materialOfSoldCals[eKey] + " calendars\n";
             }
             return statictics;
-        }
-
-        public static void addCalendar(Calendar calendar)
-        {
-            File.AppendAllText(calendarsFilePath, calendar+"\n");
         }
 
         public static string getSalesHistory()

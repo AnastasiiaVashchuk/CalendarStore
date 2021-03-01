@@ -8,14 +8,23 @@ namespace Administrator
 {
   public class AdminMenu: Menu
     {
-        public Admin admin;
+        private Admin admin;
+        
         public AdminMenu(Admin admin=null)
         {
             this.admin = admin;
         }
 
+        public Admin Admin
+        {
+            get => admin;
+            set => admin = value;
+        }
+
+
         public void displayMainMenu()
         {
+            Console.Clear();
             List<string> items = new List<string>()
             {
                 "catalog",
@@ -47,7 +56,8 @@ namespace Administrator
                 case "sales history":
                     showSalesHistory();
                     break;
-                case "Back":
+                case "Exit":
+                    Environment.Exit(0);
                     break;
             }
             
@@ -55,6 +65,7 @@ namespace Administrator
 
         public void addCalendar()
         {
+            Console.Clear();
             Console.WriteLine("__________________Add new Calendar__________________");
             List<string> items = new List<string>();
             Array colors  = Enum.GetValues(typeof(KnownColor));
@@ -80,10 +91,22 @@ namespace Administrator
             }
             string material = selectedMaterial;
             Console.Clear();
-            Console.WriteLine("$ Price: ");
-            int price = Int32.Parse(Console.ReadLine());
+            Console.Write("$ Price: ");
+            string n = Console.ReadLine();
+            int price;
+            bool isNumeric = int.TryParse(n, out price);
+            while (!isNumeric)
+            { 
+                Console.WriteLine("Please enter valid value for price");
+                System.Threading.Thread.Sleep(2000);
+                Console.Clear();
+                Console.Write("$ Price: ");
+                n = Console.ReadLine();
+                isNumeric = int.TryParse(n, out price);
+                 
+            }
             Calendar calendar = new Calendar(price, material, color);
-            Modifier.addCalendar(calendar); 
+            admin.addCalendar(calendar); 
             Console.Clear();
             while (true)
             {
@@ -99,6 +122,7 @@ namespace Administrator
 
         public void deleteCalendar(string item)
         {
+            Console.Clear();
             List<string> items = new List<string>()
             {
                 "delete calendar"
@@ -121,7 +145,6 @@ namespace Administrator
             {
                 item.Split(".");
                 Calendar calendar = Calendar.parse(item.Split(".")[1]);
-                Modifier.deleteCalendar(calendar);
                 Console.Clear();
                 while (true)
                 {
@@ -143,9 +166,9 @@ namespace Administrator
                 }
             }
         }
-
         public void showStatistics()
         {
+            Console.Clear();
             string statistics = Modifier.getStatistics();
             while (true)
             {
@@ -161,6 +184,7 @@ namespace Administrator
 
         public void showSalesHistory()
         {
+            Console.Clear();
             string history = Modifier.getSalesHistory();
             while (true)
             {
