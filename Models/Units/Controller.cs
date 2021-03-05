@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Models
 {
-    public class Modifier
+    public class Controller
     {
         public const string calendarsFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\calendars.txt";
         public const string salesHistoryFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\sales_history.txt";
@@ -15,7 +15,7 @@ namespace Models
         public const string materialFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\material.txt";
         static CultureInfo culture = new("ru-RU");
 
-        public static void addToSalesHistory(Calendar calendar,Customer customer)
+        public static void AddToSalesHistory(Calendar calendar,Customer customer)
         {
             DateTime localDate = DateTime.Now;
             string date=localDate.ToString(culture);
@@ -32,7 +32,7 @@ namespace Models
             File.AppendAllText(materialFilePath, calendar.Material+"\n");
         }
         
-        public static string getStatistics()
+        public static string GetStatistics()
         {   
             string line;
             int totalIncome=0;
@@ -42,8 +42,11 @@ namespace Models
             string statictics;
             StreamReader file = new StreamReader(incomeFilePath);  
             while((line = file.ReadLine()) != null)  
-            {  
-                totalIncome+=Int32.Parse(line);
+            {
+                if (line.Length != 0)
+                {
+                    totalIncome += Int32.Parse(line);
+                }
             } 
             statictics = "Time: " + date + "\n"+"Total income: " + totalIncome+"$" + "\n" + "Statistics by color: " + "\n";
             Dictionary<KnownColor, int> colorsOfSoldCals = new Dictionary<KnownColor, int>();
@@ -67,11 +70,11 @@ namespace Models
             file=new StreamReader(materialFilePath);  
             while((line = file.ReadLine()) != null)  
             {
-                if (materialOfSoldCals.ContainsKey(line))
+                if (materialOfSoldCals.ContainsKey(line) )
                 {
                     materialOfSoldCals[line]++;
                 }
-                else
+                else if(line.Length!=0)
                 {
                     materialOfSoldCals[line] = 1;
                 }
@@ -80,12 +83,15 @@ namespace Models
 
             foreach (var eKey in materialOfSoldCals.Keys)
             {
-                statictics+=eKey + ": " + materialOfSoldCals[eKey] + " calendars\n";
+                if (eKey.Length != 0)
+                {
+                    statictics += eKey + ": " + materialOfSoldCals[eKey] + " calendars\n";
+                }
             }
             return statictics;
         }
 
-        public static string getSalesHistory()
+        public static string GetSalesHistory()
         {
             string line;
             string content="";

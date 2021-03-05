@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Models
 {
@@ -28,9 +29,17 @@ namespace Models
             cart.Add(calendar);
         }
 
-        public bool deleteCalendarFromCart(Calendar calendar)
+        public bool DeleteCalendarFromCart(Calendar calendar)
         {
-            bool isDeleted=cart.Remove(calendar);
+            bool isDeleted = false;
+            foreach (var clndr in cart)
+            {
+                if (calendar.ToString().Equals(clndr.ToString()))
+                {
+                    isDeleted=cart.Remove(clndr);
+                    break;
+                }
+            }
             return isDeleted;
         }
     }

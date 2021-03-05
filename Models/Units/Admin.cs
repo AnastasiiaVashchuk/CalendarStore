@@ -13,7 +13,7 @@ namespace Models
         {
         }
 
-        public bool deleteCalendar(Calendar calendar)
+        public bool DeleteCalendar(Calendar calendar)
         {
             var Lines = File.ReadAllLines(calendarsFilePath);
             var newLines = Lines.Where(line => !line.Contains(calendar.ToString()));
@@ -21,7 +21,7 @@ namespace Models
             return true;
         }
 
-        public bool addCalendar(Calendar calendar)
+        public bool AddCalendar(Calendar calendar)
         {
             File.AppendAllText(calendarsFilePath, calendar+"\n");
             return true;

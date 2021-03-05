@@ -32,7 +32,7 @@ namespace Models
             set => color = value;
         }
         
-        public static Calendar parse(string str)
+        public static Calendar Parse(string str)
         {
             Regex regex = new Regex(@"Color: (\w*)");
             int price;

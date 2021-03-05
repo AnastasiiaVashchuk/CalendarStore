@@ -21,7 +21,7 @@ namespace User
         }
 
      
-        public void displayMainMenu()
+        public void DisplayMainMenu()
         {
             Console.Clear();
             List<string> items = new List<string>()
@@ -30,40 +30,40 @@ namespace User
                 "cart"
             };
             string head = "Main Menu";
-            string selectedItem = switcher(items, head, exit: true);
+            string selectedItem = Switcher(items, head, exit: true);
             switch (selectedItem)
             {
                 case "catalog":
-                    string item=showCatalog();
+                    string item=ShowCatalog();
                     if (item.Equals("Back"))
                     {
-                        displayMainMenu();
+                        DisplayMainMenu();
                     }
                     else
                     {
-                        showAddToCart(item);
+                        ShowAddToCart(item);
                     }
                     break;
                 case "cart":
-                    showCart();
+                    ShowCart();
                     break;
                 case "Exit":
                     Environment.Exit(0);
                     break;
             }
         }
-        public void showAddToCart(string calendar)
+        public void ShowAddToCart(string calendar)
         {
             Console.Clear();
             List<string> items = new List<string>()
             {
                 "put to cart",
             };
-            string selectedItem = switcher(items, back: true);
+            string selectedItem = Switcher(items, back: true);
             switch (selectedItem)
             {
                 case "put to cart":
-                    Calendar c=Calendar.parse(calendar.Split(".")[1]);
+                    Calendar c=Calendar.Parse(calendar.Split(".")[1]);
                     customer.putToCart(c);
                     Console.Clear();
                     while (true)
@@ -77,19 +77,19 @@ namespace User
                     }
                     goto case "Back";
                 case "Back":
-                    string item=showCatalog();
+                    string item=ShowCatalog();
                     if (item=="Back")
                     {
-                        displayMainMenu();
+                        DisplayMainMenu();
                     }
                     else
                     {
-                        showAddToCart(item);
+                        ShowAddToCart(item);
                     }
                     break;
             }
         }
-        public void showCart()
+        public void ShowCart()
         {
             Console.Clear();
             string head = "Cart";
@@ -103,48 +103,60 @@ namespace User
             }
 
             items.Add("Buy all");
-            string selectedItem = switcher(items, back: true);
+            string selectedItem = Switcher(items, back: true);
             switch (selectedItem)
             {
                 case "Back":
-                    displayMainMenu();
+                    DisplayMainMenu();
                     break;
                 case "Buy all":
-                    if (customer.Cart != null)
+
+                    if (customer.Cart != null && customer.Cart.Count>0)
                     {
                         foreach (var calendar in customer.Cart)
                         {
-                            Modifier.addToSalesHistory(calendar, customer);
+                            Controller.AddToSalesHistory(calendar, customer);
+                        }
+
+                        while (true)
+                        {
+                            Console.Write("Thank you for purchase!");
+                            if (Console.ReadKey().Key != null)
+                            {
+                                Console.Clear();
+                                break;
+                            }
                         }
                     }
+
                     customer.Cart = new List<Calendar>();
-                    showCart();
+                    ShowCart();
                     break;
                 default:
-                    showDeleteCalendarFromCart(Calendar.parse(selectedItem));
+                    ShowDeleteCalendarFromCart(Calendar.Parse(selectedItem));
                     break;
             }
         }
 
-        public void showDeleteCalendarFromCart(Calendar calendar)
+        public void ShowDeleteCalendarFromCart(Calendar calendar)
         {
             Console.Clear();
             List<string> items = new List<string>()
             {
                 "delete from"+" cart"
             };
-            string selectedItem = switcher(items, back: true);
+            string selectedItem = Switcher(items, back: true);
             switch (selectedItem)
             {
                 case "delete from"+" cart":
                     
-                    if (customer.deleteCalendarFromCart(calendar))
+                    if (customer.DeleteCalendarFromCart(calendar))
                     {
                         goto case "Back";
                     }
                     break;
                 case "Back":
-                    showCart();
+                    ShowCart();
                     break;
             }
             

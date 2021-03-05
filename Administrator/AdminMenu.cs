@@ -22,7 +22,7 @@ namespace Administrator
         }
 
 
-        public void displayMainMenu()
+        public void DisplayMainMenu()
         {
             Console.Clear();
             List<string> items = new List<string>()
@@ -33,28 +33,28 @@ namespace Administrator
                 "sales history"
             };
             string head = "Main Menu";
-            string selectedItem = switcher(items, head, exit: true);
+            string selectedItem = Switcher(items, head, exit: true);
             switch (selectedItem)
             {
                 case "catalog":
-                    string item=showCatalog();
+                    string item=ShowCatalog();
                     if (item=="Back")
                     {
-                        displayMainMenu();
+                        DisplayMainMenu();
                     }
                     else
                     {
-                        deleteCalendar(item);
+                        DeleteCalendar(item);
                     }
                     break;
                 case "add calendar":
-                    addCalendar();
+                    AddCalendar();
                     break;
                 case "statistics":
-                    showStatistics();
+                    ShowStatistics();
                     break;
                 case "sales history":
-                    showSalesHistory();
+                    ShowSalesHistory();
                     break;
                 case "Exit":
                     Environment.Exit(0);
@@ -63,7 +63,7 @@ namespace Administrator
             
         }
 
-        public void addCalendar()
+        public void AddCalendar()
         {
             Console.Clear();
             Console.WriteLine("__________________Add new Calendar__________________");
@@ -73,10 +73,10 @@ namespace Administrator
             {
                 items.Add(knowColor.ToString());
             }
-            string selectedColor=switcher(items, "Choose color", back: true, iscolor:true);
+            string selectedColor=Switcher(items, "Choose color", back: true, iscolor:true);
             if (selectedColor == "Back")
             {
-                displayMainMenu();
+                DisplayMainMenu();
             }
             KnownColor color = Color.FromName(selectedColor).ToKnownColor();
             items = new List<string>()
@@ -84,10 +84,10 @@ namespace Administrator
                 "cardboard",
                 "plastic"
             };
-            string selectedMaterial=switcher(items, "Choose material", back: true);
+            string selectedMaterial=Switcher(items, "Choose material", back: true);
             if (selectedColor == "Back")
             {
-                addCalendar();
+                AddCalendar();
             }
             string material = selectedMaterial;
             Console.Clear();
@@ -98,7 +98,7 @@ namespace Administrator
             while (!isNumeric)
             { 
                 Console.WriteLine("Please enter valid value for price");
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(1000);
                 Console.Clear();
                 Console.Write("$ Price: ");
                 n = Console.ReadLine();
@@ -106,7 +106,7 @@ namespace Administrator
                  
             }
             Calendar calendar = new Calendar(price, material, color);
-            admin.addCalendar(calendar); 
+            admin.AddCalendar(calendar); 
             Console.Clear();
             while (true)
             {
@@ -114,37 +114,38 @@ namespace Administrator
                 if (Console.ReadKey().Key == ConsoleKey.Enter)
                 {
                     Console.Clear();
-                    displayMainMenu();
+                    DisplayMainMenu();
                     break;
                 }
             }
         }
 
-        public void deleteCalendar(string item)
+        public void DeleteCalendar(string item)
         {
             Console.Clear();
             List<string> items = new List<string>()
             {
                 "delete calendar"
             };
-            string selected = switcher(items, back: true);
+            string selected = Switcher(items, back: true);
             if (selected == "Back")
             {
-                string elem = showCatalog();
+                string elem = ShowCatalog();
                 if (elem=="Back")
                 {
-                    displayMainMenu();
+                    DisplayMainMenu();
                 }
                 else
                 {
-                    deleteCalendar(elem);
+                    DeleteCalendar(elem);
                 }
                 
             }
             else
             {
                 item.Split(".");
-                Calendar calendar = Calendar.parse(item.Split(".")[1]);
+                Calendar calendar = Calendar.Parse(item.Split(".")[1]);
+                admin.DeleteCalendar(calendar);
                 Console.Clear();
                 while (true)
                 {
@@ -155,21 +156,21 @@ namespace Administrator
                         break;
                     }
                 }
-                string elem=showCatalog();
+                string elem=ShowCatalog();
                 if (elem=="Back")
                 {
-                    displayMainMenu();
+                    DisplayMainMenu();
                 }
                 else
                 {
-                    deleteCalendar(elem);
+                    DeleteCalendar(elem);
                 }
             }
         }
-        public void showStatistics()
+        public void ShowStatistics()
         {
             Console.Clear();
-            string statistics = Modifier.getStatistics();
+            string statistics = Controller.GetStatistics();
             while (true)
             {
                 Console.Write(statistics);
@@ -179,13 +180,13 @@ namespace Administrator
                     break;
                 }
             }
-            displayMainMenu();
+            DisplayMainMenu();
         }
 
-        public void showSalesHistory()
+        public void ShowSalesHistory()
         {
             Console.Clear();
-            string history = Modifier.getSalesHistory();
+            string history = Controller.GetSalesHistory();
             while (true)
             {
                 Console.Write(history);
@@ -195,7 +196,7 @@ namespace Administrator
                     break;
                 }
             }
-            displayMainMenu();
+            DisplayMainMenu();
         }
         
     }

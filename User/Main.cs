@@ -9,9 +9,9 @@ namespace User
         public static void main()
         {
             UserMenu menu = new UserMenu();
-            Tuple<string, string> name = menu.register();
+            Tuple<string, string> name = menu.Register();
             menu.Customer = new Customer(name.Item1, name.Item2, new List<Calendar>());
-            menu.displayMainMenu();
+            menu.DisplayMainMenu();
         }
     }
 }

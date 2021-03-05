@@ -10,9 +10,9 @@ namespace Administrator
         public static void main()
         {
             AdminMenu menu = new AdminMenu();
-            Tuple<string, string> name = menu.register();
+            Tuple<string, string> name = menu.Register();
             menu.Admin = new Admin(name.Item1, name.Item2);
-            menu.displayMainMenu();
+            menu.DisplayMainMenu();
         }
     }
 }

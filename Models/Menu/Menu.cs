@@ -9,7 +9,7 @@ namespace Models
     {
         public const string calendarsFilePath = "C:\\Users\\Anastasiia\\унік\\НавчальнаПрактика\\CalendarStore\\Models\\data\\calendars.txt";
         
-        public string switcher(List<string> items, string head = "", bool back = false, bool exit = false, bool iscolor= false)
+        public string Switcher(List<string> items, string head = "", bool back = false, bool exit = false, bool iscolor= false)
         {
             Console.Clear();
             if (back && !iscolor)
@@ -113,7 +113,7 @@ namespace Models
             return items2[selectedMenuItem];
         }
 
-        public string showCatalog()
+        public string ShowCatalog()
         {
             Console.Clear();
             List<string> items = new List<string>();
@@ -131,11 +131,11 @@ namespace Models
 
             }
             file.Close();
-            string selectedItem = switcher(items, head, back: true);
+            string selectedItem = Switcher(items, head, back: true);
             return selectedItem;
         }
 
-        public  Tuple<string, string> register()
+        public  Tuple<string, string> Register()
         {
             Console.Clear();
             Console.WriteLine("Welcome to Calendar Store!");
@@ -153,6 +153,7 @@ namespace Models
             {
                 while (true)
                 {
+                    
                     Console.Write("Please enter valid name");
                     if (Console.ReadKey().Key != null)
                     {
@@ -160,7 +161,7 @@ namespace Models
                         break;
                     }
                 }
-                register();
+                Register();
             }
             return new Tuple<string, string>(fname, lname);
         }
